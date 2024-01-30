@@ -51,7 +51,7 @@ const SigninForm = () => {
       <div className="w-full px-8 sm:px-0 sm:w-420 flex-center flex-col">
         <img src="/assets/images/logo.svg" alt="logo" />
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
-          Log to your account now!
+          Login to your account now!
         </h2>
         <p className="text-ligt-3 small-medium md:base-regular mt-2">
           Welcome Back!
