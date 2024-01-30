@@ -1,4 +1,5 @@
 import { Models } from "appwrite";
+
 import Loader from "./Loader";
 import PostsList from "@/_root/pages/PostsList";
 
@@ -9,7 +10,7 @@ const SearchResults = ({
 }: {
   isLoading: boolean;
   isFetching: boolean;
-  results: Models.Document;
+  results: Models.DocumentList<Models.Document> | undefined;
 }) => {
   console.log(results);
   if (isLoading || isFetching) {

@@ -9,7 +9,6 @@ import {
 } from "@/lib/react-query/QueriesNMutations";
 import { useEffect, useState } from "react";
 import PostsList from "./PostsList";
-import { Models } from "appwrite";
 
 const Explore = () => {
   const [searchResults, setSearchResults] = useState<string>("");

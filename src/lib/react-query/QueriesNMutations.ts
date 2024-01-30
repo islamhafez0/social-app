@@ -169,10 +169,13 @@ export const useGetAllPosts = () => {
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
     queryFn: getInfinitePosts,
     getNextPageParam: (lastPage) => {
-      if (lastPage && lastPage.documents.length === 0) return null;
+      if (lastPage && lastPage.documents.length === 0) {
+        return null;
+      }
       const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
-      return lastId;
+      return lastId ? Number(lastId) : null;
     },
+    initialPageParam: 0,
   });
 };
 

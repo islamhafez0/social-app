@@ -163,6 +163,7 @@ export const getInfinitePosts = async ({
     return posts;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
