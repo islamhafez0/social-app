@@ -1,15 +1,35 @@
-import { useParams, Link } from "react-router-dom";
-import { useGetPost } from "@/lib/react-query/QueriesNMutations";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useDeletePost, useGetPost } from "@/lib/react-query/QueriesNMutations";
 import Loader from "@/components/shared/Loader";
 import { useUserAuthContext } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import PostStats from "@/components/shared/PostStats";
 import { timeAgo } from "@/common";
+import { useToast } from "@/components/ui/use-toast";
 const PostDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const { data: post, isError, isLoading } = useGetPost(id);
+  const { mutateAsync: deletePost, isPending: isDeleteLoading } =
+    useDeletePost();
   const { user } = useUserAuthContext();
-  console.log(post);
+
+  const handleDeletePost = async () => {
+    const deletedPost = await deletePost({
+      postId: post?.$id || "",
+      imageId: post?.imageId,
+    });
+    if (!deletedPost) {
+      toast({
+        title: "Something went wrong please try delete the post again",
+      });
+    }
+    if (deletedPost) {
+      navigate("/");
+    }
+  };
+
   return (
     <section className="post_details-container">
       {isError && (
@@ -58,14 +78,22 @@ const PostDetails = () => {
                       height={24}
                     />
                   </Link>
-                  <Button variant="ghost" className="post_details-delete_btn">
-                    <img
-                      src="/assets/icons/delete.svg"
-                      alt="delete"
-                      width={24}
-                      height={24}
-                    />
-                  </Button>
+                  {isDeleteLoading ? (
+                    <Loader />
+                  ) : (
+                    <Button
+                      onClick={handleDeletePost}
+                      variant="ghost"
+                      className="post_details-delete_btn"
+                    >
+                      <img
+                        src="/assets/icons/delete.svg"
+                        alt="delete"
+                        width={24}
+                        height={24}
+                      />
+                    </Button>
+                  )}
                 </div>
               )}
             </div>

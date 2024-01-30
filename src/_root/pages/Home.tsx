@@ -2,19 +2,33 @@ import Loader from "@/components/shared/Loader";
 import Post from "@/components/shared/Post";
 import UserCard from "@/components/shared/UserCard";
 import {
+  useGetAllPosts,
   useGetAllUsers,
-  useGetRecentPost,
 } from "@/lib/react-query/QueriesNMutations";
 import { Models } from "appwrite";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
-  const { data, isLoading, isError } = useGetRecentPost();
+  const { ref, inView } = useInView();
+  const { hasNextPage, fetchNextPage, data, isLoading, isError } =
+    useGetAllPosts();
   const {
     data: users,
     isLoading: isUsersLoading,
     isError: isUserError,
   } = useGetAllUsers(10);
-  const posts = data?.documents;
+
+  const posts = data?.pages.flatMap((page) => page.documents) || [];
+
+  useEffect(() => {
+    if (inView && hasNextPage) fetchNextPage();
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  console.log(posts);
+  console.log(hasNextPage);
+
+  const postsEnd = !hasNextPage && posts.length > 0;
   return (
     <section className="flex flex-1">
       <div className="home-container">
@@ -35,6 +49,13 @@ const Home = () => {
             </ul>
           )}
         </div>
+        {!postsEnd ? (
+          <div className="mt-6" ref={ref}>
+            <Loader />
+          </div>
+        ) : (
+          <p className="text-light-4 mt-10 text-center w-full">End Of Posts</p>
+        )}
       </div>
       <div className="home-creators">
         <h3 className="h3-bold text-light-1">Top Creators</h3>

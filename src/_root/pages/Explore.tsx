@@ -5,7 +5,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { useInView } from "react-intersection-observer";
 import {
   useGetAllPosts,
-  useSeacrchPosts,
+  useSearchPosts,
 } from "@/lib/react-query/QueriesNMutations";
 import { useEffect, useState } from "react";
 import PostsList from "./PostsList";
@@ -18,7 +18,7 @@ const Explore = () => {
     data: results,
     isLoading: isLoadingResults,
     isFetching: isFEtchingResults,
-  } = useSeacrchPosts(debouncedValue);
+  } = useSearchPosts(debouncedValue);
 
   const { ref, inView } = useInView();
 
@@ -86,10 +86,14 @@ const Explore = () => {
           ))
         )}
       </div>
-      {hasNextPage && !searchResults && (
+      {hasNextPage && !searchResults ? (
         <div className="mt-6" ref={ref}>
           <Loader />
         </div>
+      ) : (
+        !searchResults && (
+          <p className="text-light-4 mt-10 text-center w-full">End Of Posts</p>
+        )
       )}
     </section>
   );

@@ -167,18 +167,21 @@ export const useDeletePost = () => {
 export const useGetAllPosts = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
-    queryFn: getInfinitePosts,
-    getNextPageParam: (lastPage) => {
-      if (lastPage && lastPage.documents.length === 0) {
+    queryFn: ({ pageParam }) => getInfinitePosts({ pageParam }),
+    getNextPageParam: (lastPage: any) => {
+      if (!lastPage || lastPage.total <= lastPage.documents.length) {
         return null;
       }
-      const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
-      return lastId;
+      const lastDocument = lastPage.documents[lastPage.documents.length - 1];
+      if (lastDocument && lastDocument.$id) {
+        return lastDocument.$id;
+      }
     },
+    initialPageParam: 0,
   });
 };
 
-export const useSeacrchPosts = (searchTerm: string) => {
+export const useSearchPosts = (searchTerm: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_SEARCH_POSTS, searchTerm],
     queryFn: () => searchForPosts(searchTerm),

@@ -12,7 +12,6 @@ const SearchResults = ({
   isFetching: boolean;
   results: Models.DocumentList<Models.Document> | undefined;
 }) => {
-  console.log(results);
   if (isLoading || isFetching) {
     return (
       <div className="flex items-center justify-center w-full">

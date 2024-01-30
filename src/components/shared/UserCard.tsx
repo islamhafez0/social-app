@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
 const UserCard = ({ user }: { user: Models.Document }) => {
-  console.log(user);
   return (
     <Link to={`/profile/${user.$id}`} className="user-card">
       <img src={user.imageUrl} alt="user" className="h-14 w-14 rounded-full" />

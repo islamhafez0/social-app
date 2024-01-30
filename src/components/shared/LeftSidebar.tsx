@@ -78,6 +78,9 @@ const LeftSidebar = () => {
           <p className="small-medium lg:base-medium">Logout</p>
         )}
       </Button>
+      <p className="absolute text-light-4 bottom-2 left-6 text-center">
+        &copy; Eslam Hafez {new Date().getFullYear()}
+      </p>
     </nav>
   );
 };
