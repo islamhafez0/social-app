@@ -173,9 +173,8 @@ export const useGetAllPosts = () => {
         return null;
       }
       const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
-      return lastId ? Number(lastId) : null;
+      return lastId;
     },
-    initialPageParam: 0,
   });
 };
 
